@@ -5,6 +5,19 @@
 
 藉由這個模板，你可以輕鬆替換成自己的文字、照片與音樂，打造一份獨一無二的數位情書獻給特別的她/他。
 
+## 📸 畫面預覽 (Screenshots)
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px;">
+  <img src="demo/demo1.jpg" width="24%" alt="Demo 1">
+  <img src="demo/demo2.jpg" width="24%" alt="Demo 2">
+  <img src="demo/demo3.jpg" width="24%" alt="Demo 3">
+  <img src="demo/demo4.jpg" width="24%" alt="Demo 4">
+  <img src="demo/demo5.jpg" width="24%" alt="Demo 5">
+  <img src="demo/demo6.jpg" width="24%" alt="Demo 6">
+  <img src="demo/demo7.jpg" width="24%" alt="Demo 7">
+  <img src="demo/demo8.jpg" width="24%" alt="Demo 8">
+</div>
+
 ---
 
 ## ✨ 網站特色
