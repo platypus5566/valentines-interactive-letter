@@ -32,7 +32,7 @@
 
 ### 1. 取得專案
 ```bash
-git clone https://github.com/YourUsername/valentines-interactive-letter.git
+git clone https://github.com/platypus5566/valentines-interactive-letter.git
 cd valentines-interactive-letter
 ```
 
