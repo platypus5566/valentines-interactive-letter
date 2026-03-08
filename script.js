@@ -2,25 +2,7 @@
    情人節告白互動網頁 - 主要腳本
    ======================================== */
 
-// ========== 設定區 ==========
-
-// 告白信內容（用戶可自訂）
-const LOVE_LETTER = [
-  "不知道從什麼時候開始，你就成了我每天最期待的事。",
-  "每次看到你的訊息，心裡都會偷偷開心好久。",
-  "你笑起來的樣子，是我見過最美的風景。",
-  "跟你在一起的時候，連空氣都變得甜甜的。",
-  "我喜歡聽你說話，喜歡看你認真的樣子，喜歡你的每一個小表情。",
-  "有時候我會想，能認識你真的是太好了。",
-  "我知道我不是最完美的人，但我想成為最懂你、最珍惜你的那個人。",
-  "所以今天，我想鼓起勇氣，把這些話告訴你⋯⋯"
-];
-
-// 聊天截圖數量（用戶可自訂）
-const CHAT_COUNT = 35;
-
-// 開場文字
-const OPENING_TEXT = "有些話⋯⋯\n我一直想對你說";
+// ========== 設定區 (已移至 config.js) ==========
 
 // ========== 全域狀態 ==========
 
@@ -37,6 +19,7 @@ let memoryHighlightTimer = null;
 // ========== 初始化 ==========
 
 document.addEventListener('DOMContentLoaded', () => {
+  initConfig();
   initParticles();
   initPhotoLoader();
   initMemoryWall();
@@ -45,6 +28,51 @@ document.addEventListener('DOMContentLoaded', () => {
   initTypewriter();
   initConfessionButtons();
 });
+
+function initConfig() {
+  document.title = CONFIG.pageTitle || "給你的一封信 💌";
+  const nameEl = document.getElementById('confession-name');
+  if (nameEl) nameEl.textContent = CONFIG.personName || "王小美";
+
+  const firstMeetEl = document.getElementById('first-meet-photo');
+  if (firstMeetEl && CONFIG.photos.firstMeet) firstMeetEl.dataset.src = "photos/together/" + CONFIG.photos.firstMeet;
+
+  const ringEl = document.getElementById('ring-photo');
+  if (ringEl && CONFIG.photos.ring) ringEl.dataset.src = "photos/" + CONFIG.photos.ring;
+
+  const finalEl = document.getElementById('final-photo');
+  if (finalEl && CONFIG.photos.finalPhoto) finalEl.dataset.src = "photos/together/" + CONFIG.photos.finalPhoto;
+
+  const cuteCards = document.getElementById('cute-cards');
+  if (cuteCards && CONFIG.photos.cute) {
+    cuteCards.innerHTML = '';
+    CONFIG.photos.cute.forEach((photo, idx) => {
+      cuteCards.innerHTML += `
+        <div class="cute-card">
+          <div class="photo-placeholder" data-src="photos/cute/${photo}">
+            <span>🥰</span><small>可愛照 ${idx + 1}</small>
+          </div>
+          <div class="card-caption">好可愛 💕</div>
+        </div>
+      `;
+    });
+  }
+
+  const detailCards = document.getElementById('detail-cards');
+  if (detailCards && CONFIG.photos.details) {
+    detailCards.innerHTML = '';
+    CONFIG.photos.details.forEach((detail, idx) => {
+      detailCards.innerHTML += `
+        <div class="detail-card">
+          <div class="detail-tag">${detail.tag}</div>
+          <div class="photo-placeholder" data-src="photos/details/${detail.image}">
+            <span>📸</span><small>特寫 ${idx + 1}</small>
+          </div>
+        </div>
+      `;
+    });
+  }
+}
 
 // ========== 粒子系統 ==========
 
@@ -295,7 +323,7 @@ function switchScene(targetScene) {
 function initTypewriter() {
   const textEl = document.getElementById('opening-text');
   const hint = document.getElementById('hint-1');
-  const chars = OPENING_TEXT.split('');
+  const chars = (CONFIG.openingText || "有些話⋯⋯\n我一直想對你說").split('');
   let index = 0;
   hint.style.opacity = '0';
 
@@ -356,7 +384,10 @@ function initMemoryWall() {
   const cellW = vw / cols;
   const cellH = vh / rows;
 
-  for (let i = 0; i < CHAT_COUNT; i++) {
+  const memPhotos = CONFIG.photos.memoryWall || [];
+  const memoryCount = memPhotos.length > 0 ? Math.max(36, memPhotos.length) : 36;
+
+  for (let i = 0; i < memoryCount; i++) {
     const card = document.createElement('div');
     card.className = 'memory-card';
 
@@ -400,7 +431,8 @@ function initMemoryWall() {
     // 建立照片佔位
     const placeholder = document.createElement('div');
     placeholder.className = 'photo-placeholder';
-    placeholder.dataset.src = `photos/chats/chat${i + 1}.jpg`;
+    const photoName = memPhotos.length > 0 ? memPhotos[i % memPhotos.length] : `chat${i + 1}.jpg`;
+    placeholder.dataset.src = `photos/chats/${photoName}`;
     placeholder.innerHTML = `<span>💬</span><small>${i + 1}</small>`;
     card.appendChild(placeholder);
 
@@ -467,7 +499,8 @@ function startLetterAnimation() {
   const letterBody = document.getElementById('letter-body');
   letterBody.innerHTML = '';
 
-  LOVE_LETTER.forEach((text, i) => {
+  const letter = CONFIG.loveLetter || [];
+  letter.forEach((text, i) => {
     const p = document.createElement('p');
     p.textContent = text;
     letterBody.appendChild(p);

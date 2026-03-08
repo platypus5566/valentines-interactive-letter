@@ -30,38 +30,23 @@ cd valentines-interactive-letter
 
 ## 🛠️ 如何客製化你的內容？
 
-### 📝 1. 修改主要文案 (`index.html` 與 `script.js`)
+為求簡單易用，所有的文字與照片設定都已統整到 `config.js` 檔案中，**你完全不需要修改 HTML 或任何複雜的程式碼**！
 
-**[⚠️ 必須修改] 告白對象名字**：
-打開 `index.html`，尋找 `<h1 class="confession-name">`（大約在第 7 幕），並更改裡面的名字。
+### 📝 1. 修改設定檔 (`config.js`)
+使用文字編輯器（如記事本、VS Code）打開 `config.js`，你可以直接在裡面修改：
+- 網頁標題 (`pageTitle`)
+- 開場打字機文字 (`openingText`)
+- 告白對象的名字 (`personName`) - **[⚠️ 必須修改]**
+- 告白信的每一段文字 (`loveLetter`)
 
-**[⚠️ 必須修改] 小細節標籤**：
-打開 `index.html`，在第 4 幕（ Scene 4 ）中，有列出對方的小細節（如美甲、美睫、瑜伽）。
-請搜尋 `<div class="detail-tag">` 來修改成屬於你們的專屬標籤，或不需要的話可以直接刪除整塊卡片 (`<div class="detail-card">`)。
+### 📸 2. 置換專屬照片
+照片的資料夾結構位於 `photos/`，你可以將自己的照片放入對應資料夾，然後在 `config.js` 中把檔名填上即可，不限制只能叫什麼名稱！
 
-**告白信內容**：
-打開 `script.js`，在檔案最上方的設定區修改你的專屬告白內容：
-```javascript
-// 告白信內容（逐段顯示）
-const LOVE_LETTER = [
-  "不知道從什麼時候開始，你就成了我每天最期待的事。",
-  "每次看到你的訊息，心裡都會偷偷開心好久。",
-  // ... 替換成你想說的話
-];
-
-// 開場打字機文字
-const OPENING_TEXT = "有些話⋯⋯\n我一直想對你說";
-```
-
-### 📸 2. 置換照片
-照片的資料夾結構位於 `photos/`，你可以將自己的照片依照以下對應位置放入，並且支援 `.jpg`, `.jpeg`, `.png` 等主流格式：
-
-- **`photos/together/`**: 存放合照 (如 `together.jpg`)
-- **`photos/cute/`**: 存放對方可愛的照片 (如 `cute1.jpg`, `cute2.jpg`, `cute3.jpg`)
-- **`photos/details/`**: 存放對方的特寫或細節 (如 `nails.jpg`, `lashes.jpg`, `yoga.jpg`)
-- **`photos/ring.jpg`**: 第七幕（告白場景）的戒指圖
-- **`photos/chats/`**: 第五幕（漂浮記憶牆）的聊天截圖或點滴照片，請命名為 `chat1.jpg` ~ `chat35.jpg`。
-  *(可以在 `script.js` 改變 `const CHAT_COUNT = 35;` 來設定你有幾張)*
+- **`photos/together/`**: 放入具有特別意義的合照，並在 `config.js` 的 `firstMeet` 與 `finalPhoto` 填入該檔名。
+- **`photos/cute/`**: 放入對方可愛的照片，並在 `config.js` 的 `cute` 陣列中增加對應檔名（不限數量）。
+- **`photos/details/`**: 放入對方特寫照片（如美甲、美睫等），並在 `config.js` 的 `details` 陣列中修改你的專屬標籤文字與對應的標籤檔名。 - **[⚠️ 必須修改這裡來符合你們的故事]**
+- **`photos/`**: 直接將戒指或禮物照片放在這個目錄下，並在 `config.js` 的 `ring` 設定檔名。
+- **`photos/chats/`**: 放入漂浮記憶牆的點滴照片，並填寫在 `config.js` 的 `memoryWall` 中。如果不夠 30 張，網頁會自動重複使用來填滿畫面。
 
 > **💡 小提示**：如果還沒有準備好照片也沒關係！找不到對應照片時，網頁會自動顯示成帶有 Emoji 的精美的預設佔位圖，不會破壞版面。
 

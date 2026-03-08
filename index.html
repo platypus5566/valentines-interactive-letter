@@ -12,6 +12,7 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="config.js"></script>
 </head>
 
 <body>
@@ -48,8 +49,7 @@
       <p class="scene-subtitle fade-in-up delay-1">我的世界就不一樣了</p>
       <div class="photo-frame fade-in-up delay-2">
         <div class="photo-glow"></div>
-        <!-- 用戶替換：第一張合照 -->
-        <div class="photo-placeholder" data-src="photos/together/together.jpg">
+        <div class="photo-placeholder" id="first-meet-photo">
           <span>📸</span>
           <small>合照</small>
         </div>
@@ -63,26 +63,8 @@
     <div class="scene-content">
       <h2 class="scene-title fade-in-up">你的每個樣子</h2>
       <p class="scene-subtitle fade-in-up delay-1">我都好喜歡</p>
-      <div class="cute-cards fade-in-up delay-2">
-        <!-- 用戶替換：可愛照片 -->
-        <div class="cute-card">
-          <div class="photo-placeholder" data-src="photos/cute/cute1.jpg">
-            <span>🥰</span><small>可愛照 1</small>
-          </div>
-          <div class="card-caption">好可愛 💕</div>
-        </div>
-        <div class="cute-card">
-          <div class="photo-placeholder" data-src="photos/cute/cute2.jpg">
-            <span>🥰</span><small>可愛照 2</small>
-          </div>
-          <div class="card-caption">超好看 ✨</div>
-        </div>
-        <div class="cute-card">
-          <div class="photo-placeholder" data-src="photos/cute/cute3.jpg">
-            <span>🥰</span><small>可愛照 3</small>
-          </div>
-          <div class="card-caption">怎麼這麼美 💗</div>
-        </div>
+      <div class="cute-cards fade-in-up delay-2" id="cute-cards">
+        <!-- 由 JS 動態生成可愛照片 -->
       </div>
       <button class="scene-next-btn">繼續 →</button>
     </div>
@@ -93,26 +75,8 @@
     <div class="scene-content">
       <h2 class="scene-title fade-in-up">連你的小細節</h2>
       <p class="scene-subtitle fade-in-up delay-1">我都捨不得錯過</p>
-      <div class="detail-cards fade-in-up delay-2">
-        <!-- 用戶替換：美甲、美睫、瑜伽照片 -->
-        <div class="detail-card">
-          <div class="detail-tag">✨ 美甲</div>
-          <div class="photo-placeholder" data-src="photos/details/nails.jpg">
-            <span>💅</span><small>美甲照</small>
-          </div>
-        </div>
-        <div class="detail-card">
-          <div class="detail-tag">🦋 美睫</div>
-          <div class="photo-placeholder" data-src="photos/details/lashes.jpg">
-            <span>👁️</span><small>美睫照</small>
-          </div>
-        </div>
-        <div class="detail-card">
-          <div class="detail-tag">🧘 瑜伽</div>
-          <div class="photo-placeholder" data-src="photos/details/yoga.jpg">
-            <span>🧘‍♀️</span><small>瑜伽照</small>
-          </div>
-        </div>
+      <div class="detail-cards fade-in-up delay-2" id="detail-cards">
+        <!-- 由 JS 動態生成小細節照片 -->
       </div>
       <button class="scene-next-btn">繼續 →</button>
     </div>
@@ -124,7 +88,7 @@
       <h2 class="memory-wall-title fade-in-up">我們說過的每一句話</h2>
       <p class="memory-wall-subtitle fade-in-up delay-1">我都記得</p>
     </div>
-    <!-- 36 張聊天截圖由 JS 動態生成 -->
+    <!-- 聊天截圖由 JS 動態從 config.js 讀取產生 -->
     <div class="memory-wall" id="memory-wall"></div>
     <button class="scene-next-btn">繼續 →</button>
   </section>
@@ -147,13 +111,12 @@
     <div class="scene-content">
       <div class="ring-container fade-in-up">
         <div class="ring-glow"></div>
-        <!-- 用戶替換：戒指照片 -->
-        <div class="photo-placeholder ring-photo" data-src="photos/ring.jpg">
+        <div class="photo-placeholder ring-photo" id="ring-photo">
           <span>💍</span><small>戒指照</small>
         </div>
       </div>
       <h2 class="confession-text fade-in-up delay-1">所以⋯⋯</h2>
-      <h1 class="confession-name fade-in-up delay-2">王小美</h1>
+      <h1 class="confession-name fade-in-up delay-2" id="confession-name"></h1>
       <h1 class="confession-question fade-in-up delay-2">你願意當我的女朋友嗎？</h1>
       <div class="confession-buttons fade-in-up delay-3">
         <button class="btn-yes" id="btn-yes">我願意 💕</button>
@@ -171,8 +134,7 @@
       <h2 class="celebration-text fade-in-up delay-2">你是我的了</h2>
       <p class="celebration-sub fade-in-up delay-3">Happy Valentine's Day 🌹</p>
       <div class="final-photo fade-in-up delay-4">
-        <!-- 用戶替換：最後一張合照 -->
-        <div class="photo-placeholder" data-src="photos/together/together.jpg">
+        <div class="photo-placeholder" id="final-photo">
           <span>💑</span><small>最美的合照</small>
         </div>
       </div>
