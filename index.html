@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>給你的一封信 💌</title>
+  <meta name="description" content="一封特別的信，獻給特別的你">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- 背景音樂控制 -->
+  <button id="music-toggle" class="music-btn" aria-label="音樂開關">
+    <span class="music-icon">🎵</span>
+  </button>
+  <audio id="bgm" loop>
+    <source src="music/bgm.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Lightbox 大圖檢視 -->
+  <div class="lightbox-overlay" id="lightbox">
+    <img id="lightbox-img" src="" alt="放大檢視">
+    <button class="lightbox-close" id="lightbox-close">✕</button>
+  </div>
+
+  <!-- Canvas 粒子背景 -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- ====== Scene 1: 星空開場 ====== -->
+  <section class="scene active" id="scene-1">
+    <div class="scene-content">
+      <div class="typewriter-text" id="opening-text"></div>
+      <button class="scene-next-btn" id="hint-1" style="opacity:0">繼續 →</button>
+    </div>
+  </section>
+
+  <!-- ====== Scene 2: 我們的開始 ====== -->
+  <section class="scene" id="scene-2">
+    <div class="scene-content">
+      <h2 class="scene-title fade-in-up">從認識你的那天起</h2>
+      <p class="scene-subtitle fade-in-up delay-1">我的世界就不一樣了</p>
+      <div class="photo-frame fade-in-up delay-2">
+        <div class="photo-glow"></div>
+        <!-- 用戶替換：第一張合照 -->
+        <div class="photo-placeholder" data-src="photos/together/together.jpg">
+          <span>📸</span>
+          <small>合照</small>
+        </div>
+      </div>
+      <button class="scene-next-btn">繼續 →</button>
+    </div>
+  </section>
+
+  <!-- ====== Scene 3: 你的每個樣子 ====== -->
+  <section class="scene" id="scene-3">
+    <div class="scene-content">
+      <h2 class="scene-title fade-in-up">你的每個樣子</h2>
+      <p class="scene-subtitle fade-in-up delay-1">我都好喜歡</p>
+      <div class="cute-cards fade-in-up delay-2">
+        <!-- 用戶替換：可愛照片 -->
+        <div class="cute-card">
+          <div class="photo-placeholder" data-src="photos/cute/cute1.jpg">
+            <span>🥰</span><small>可愛照 1</small>
+          </div>
+          <div class="card-caption">好可愛 💕</div>
+        </div>
+        <div class="cute-card">
+          <div class="photo-placeholder" data-src="photos/cute/cute2.jpg">
+            <span>🥰</span><small>可愛照 2</small>
+          </div>
+          <div class="card-caption">超好看 ✨</div>
+        </div>
+        <div class="cute-card">
+          <div class="photo-placeholder" data-src="photos/cute/cute3.jpg">
+            <span>🥰</span><small>可愛照 3</small>
+          </div>
+          <div class="card-caption">怎麼這麼美 💗</div>
+        </div>
+      </div>
+      <button class="scene-next-btn">繼續 →</button>
+    </div>
+  </section>
+
+  <!-- ====== Scene 4: 你的小細節 ====== -->
+  <section class="scene" id="scene-4">
+    <div class="scene-content">
+      <h2 class="scene-title fade-in-up">連你的小細節</h2>
+      <p class="scene-subtitle fade-in-up delay-1">我都捨不得錯過</p>
+      <div class="detail-cards fade-in-up delay-2">
+        <!-- 用戶替換：美甲、美睫、瑜伽照片 -->
+        <div class="detail-card">
+          <div class="detail-tag">✨ 美甲</div>
+          <div class="photo-placeholder" data-src="photos/details/nails.jpg">
+            <span>💅</span><small>美甲照</small>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-tag">🦋 美睫</div>
+          <div class="photo-placeholder" data-src="photos/details/lashes.jpg">
+            <span>👁️</span><small>美睫照</small>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-tag">🧘 瑜伽</div>
+          <div class="photo-placeholder" data-src="photos/details/yoga.jpg">
+            <span>🧘‍♀️</span><small>瑜伽照</small>
+          </div>
+        </div>
+      </div>
+      <button class="scene-next-btn">繼續 →</button>
+    </div>
+  </section>
+
+  <!-- ====== Scene 5: 我們的對話（漂浮記憶牆） ====== -->
+  <section class="scene" id="scene-5">
+    <div class="memory-wall-overlay">
+      <h2 class="memory-wall-title fade-in-up">我們說過的每一句話</h2>
+      <p class="memory-wall-subtitle fade-in-up delay-1">我都記得</p>
+    </div>
+    <!-- 36 張聊天截圖由 JS 動態生成 -->
+    <div class="memory-wall" id="memory-wall"></div>
+    <button class="scene-next-btn">繼續 →</button>
+  </section>
+
+  <!-- ====== Scene 6: 想對你說的話 ====== -->
+  <section class="scene" id="scene-6">
+    <div class="scene-content letter-scene">
+      <div class="letter-paper fade-in-up">
+        <div class="letter-header">💌 給你的一封信</div>
+        <div class="letter-body" id="letter-body">
+          <!-- 告白文字會由 JS 逐段顯示 -->
+        </div>
+      </div>
+      <button class="scene-next-btn">繼續 →</button>
+    </div>
+  </section>
+
+  <!-- ====== Scene 7: 告白 ====== -->
+  <section class="scene" id="scene-7">
+    <div class="scene-content">
+      <div class="ring-container fade-in-up">
+        <div class="ring-glow"></div>
+        <!-- 用戶替換：戒指照片 -->
+        <div class="photo-placeholder ring-photo" data-src="photos/ring.jpg">
+          <span>💍</span><small>戒指照</small>
+        </div>
+      </div>
+      <h2 class="confession-text fade-in-up delay-1">所以⋯⋯</h2>
+      <h1 class="confession-name fade-in-up delay-2">王小美</h1>
+      <h1 class="confession-question fade-in-up delay-2">你願意當我的女朋友嗎？</h1>
+      <div class="confession-buttons fade-in-up delay-3">
+        <button class="btn-yes" id="btn-yes">我願意 💕</button>
+        <button class="btn-no" id="btn-no">讓我想想 🤔</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Scene 8: 慶祝 ====== -->
+  <section class="scene" id="scene-8">
+    <canvas id="fireworks-canvas"></canvas>
+    <div class="scene-content">
+      <h1 class="celebration-title fade-in-up">❤️</h1>
+      <h2 class="celebration-text fade-in-up delay-1">從今以後</h2>
+      <h2 class="celebration-text fade-in-up delay-2">你是我的了</h2>
+      <p class="celebration-sub fade-in-up delay-3">Happy Valentine's Day 🌹</p>
+      <div class="final-photo fade-in-up delay-4">
+        <!-- 用戶替換：最後一張合照 -->
+        <div class="photo-placeholder" data-src="photos/together/together.jpg">
+          <span>💑</span><small>最美的合照</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

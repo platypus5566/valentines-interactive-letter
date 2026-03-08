@@ -1,0 +1,954 @@
+/* ========================================
+   情人節告白互動網頁 - 樣式表
+   ======================================== */
+
+/* --- CSS 變數 --- */
+:root {
+  --bg-dark: #0a0a1a;
+  --bg-deep: #0d0d2b;
+  --accent-pink: #ff6b9d;
+  --accent-rose: #c44569;
+  --accent-gold: #f8b500;
+  --accent-lavender: #b8a9c9;
+  --accent-soft-pink: #ffc3d0;
+  --text-primary: #f0e6f6;
+  --text-secondary: #c4b0d4;
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glow-pink: rgba(255, 107, 157, 0.4);
+  --glow-gold: rgba(248, 181, 0, 0.3);
+  --font-serif: 'Noto Serif TC', serif;
+  --font-sans: 'Noto Sans TC', sans-serif;
+}
+
+/* --- Reset --- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  overflow: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Canvas 粒子背景 --- */
+#particles-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* --- 音樂按鈕 --- */
+.music-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+}
+
+.music-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px var(--glow-pink);
+}
+
+.music-btn.playing .music-icon {
+  animation: musicPulse 1s ease-in-out infinite;
+}
+
+.music-btn.muted {
+  opacity: 0.3;
+}
+
+@keyframes musicPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* --- 場景基礎 --- */
+.scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 1.2s;
+  cursor: default;
+}
+
+.scene.active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0s;
+}
+
+.scene-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 40px 24px;
+  max-width: 600px;
+  width: 100%;
+}
+
+/* --- 文字樣式 --- */
+.scene-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+}
+
+.scene-subtitle {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* --- 打字機效果 --- */
+.typewriter-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.8;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.typewriter-text .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: var(--accent-pink);
+  margin-left: 4px;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+/* --- 場景切換按鈕 --- */
+.scene-next-btn {
+  position: fixed;
+  bottom: 36px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: fit-content;
+  z-index: 20;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  padding: 14px 36px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  animation: btnGlow 3s ease-in-out infinite;
+}
+
+.scene-next-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.2), rgba(184, 169, 201, 0.15));
+  border-color: var(--accent-pink);
+  transform: scale(1.06);
+  box-shadow: 0 4px 30px var(--glow-pink), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.scene-next-btn:active {
+  transform: scale(0.97);
+}
+
+@keyframes btnGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 4px 25px rgba(255, 107, 157, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* --- Lightbox 全屏預覽 --- */
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+  cursor: zoom-out;
+}
+
+.lightbox-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease, visibility 0s linear 0s;
+}
+
+.lightbox-overlay img {
+  max-width: 90vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  transform: scale(0.85);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.lightbox-overlay.active img {
+  transform: scale(1);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 1.3rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+/* 照片加上可點擊提示 */
+.photo-placeholder.has-image {
+  cursor: zoom-in;
+}
+
+/* --- 淡入動畫 --- */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.scene.active .fade-in-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-1 {
+  transition-delay: 0.3s;
+}
+
+.delay-2 {
+  transition-delay: 0.6s;
+}
+
+.delay-3 {
+  transition-delay: 0.9s;
+}
+
+.delay-4 {
+  transition-delay: 1.2s;
+}
+
+/* --- 照片佔位 & 共用框架 --- */
+.photo-placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(135deg,
+      rgba(255, 107, 157, 0.15),
+      rgba(184, 169, 201, 0.15));
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.photo-placeholder span {
+  font-size: 2rem;
+  opacity: 0.5;
+}
+
+.photo-placeholder small {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* 當有真實圖片時隱藏佔位文字 */
+.photo-placeholder.has-image span,
+.photo-placeholder.has-image small {
+  display: none;
+}
+
+.photo-placeholder.has-image {
+  background: none;
+}
+
+.photo-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* --- Scene 2: 單張照片框架 --- */
+.photo-frame {
+  position: relative;
+  max-width: 450px;
+  margin: 0 auto 60px;
+}
+
+.photo-glow {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background: radial-gradient(ellipse, var(--glow-pink), transparent 70%);
+  border-radius: 20px;
+  opacity: 0.4;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.03);
+  }
+}
+
+.photo-frame .photo-placeholder {
+  border: 2px solid var(--glass-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Scene 3: 合照 Gallery --- */
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 60px;
+}
+
+.gallery-item {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 30px var(--glow-pink);
+}
+
+.gallery-item .photo-placeholder {
+  aspect-ratio: 1;
+  border-radius: 0;
+}
+
+/* --- Scene 4: 可愛照卡片 --- */
+.cute-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 60px;
+  max-width: 580px;
+  width: 92%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cute-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.4s ease;
+  animation: cardFloat 4s ease-in-out infinite;
+}
+
+.cute-card:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.cute-card:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes cardFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.cute-card .photo-placeholder {
+  aspect-ratio: 2 / 3;
+  border-radius: 16px 16px 0 0;
+}
+
+.card-caption {
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  color: var(--accent-soft-pink);
+  font-weight: 500;
+}
+
+/* --- Scene 5: 細節卡片 --- */
+.detail-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 60px;
+}
+
+.detail-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.detail-card:hover {
+  transform: scale(1.05);
+}
+
+.detail-tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.detail-card .photo-placeholder {
+  aspect-ratio: 2 / 3;
+  border-radius: 0;
+}
+
+/* --- Scene 5: 漂浮記憶牆 --- */
+.memory-wall {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.memory-wall-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center,
+      rgba(10, 10, 26, 0.7) 0%,
+      rgba(10, 10, 26, 0.3) 50%,
+      rgba(10, 10, 26, 0.1) 100%);
+}
+
+.memory-wall-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+
+.memory-wall-subtitle {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  font-weight: 300;
+  color: var(--text-secondary);
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
+}
+
+.memory-card {
+  position: absolute;
+  width: var(--card-w, 120px);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: rotate(var(--rot, 0deg)) scale(0.6);
+  transition: opacity 0.8s ease, transform 0.6s ease, box-shadow 0.4s ease, z-index 0s;
+  cursor: default;
+  z-index: 2;
+}
+
+/* 進入場景時，卡片逐一淡入 */
+.scene.active .memory-card {
+  opacity: var(--card-opacity, 0.75);
+  transform: rotate(var(--rot, 0deg)) scale(1);
+}
+
+/* 卡片漂浮動畫 */
+.memory-card.floating {
+  animation: memoryFloat var(--float-duration, 6s) ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+
+@keyframes memoryFloat {
+
+  0%,
+  100% {
+    transform: rotate(var(--rot, 0deg)) translate(0, 0) scale(1);
+  }
+
+  25% {
+    transform: rotate(calc(var(--rot, 0deg) + 1deg)) translate(var(--dx, 5px), var(--dy, -8px)) scale(1);
+  }
+
+  50% {
+    transform: rotate(var(--rot, 0deg)) translate(var(--dx2, -3px), var(--dy2, 5px)) scale(1);
+  }
+
+  75% {
+    transform: rotate(calc(var(--rot, 0deg) - 1deg)) translate(calc(var(--dx, 5px) * -0.5), calc(var(--dy, -8px) * 0.5)) scale(1);
+  }
+}
+
+/* 聚焦高亮的卡片 */
+.memory-card.highlight {
+  opacity: 1 !important;
+  z-index: 10 !important;
+  box-shadow: 0 0 30px var(--glow-pink), 0 8px 40px rgba(0, 0, 0, 0.5);
+  border-color: var(--accent-pink);
+  transform: rotate(0deg) scale(1.3) !important;
+  animation: none !important;
+}
+
+.memory-card .photo-placeholder {
+  aspect-ratio: 3 / 4;
+  border-radius: 0;
+}
+
+.memory-card .photo-placeholder img {
+  border-radius: 0;
+}
+
+/* 手機上記憶牆提示文字加強陰影 */
+#scene-5 .scene-next-btn {
+  z-index: 4;
+}
+
+/* --- Scene 7: 信紙 --- */
+.letter-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.letter-paper {
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 36px 28px;
+  max-width: 480px;
+  width: 100%;
+  text-align: left;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  margin-bottom: 60px;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+.letter-header {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  color: var(--accent-soft-pink);
+  margin-bottom: 24px;
+  text-align: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.letter-body p {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.letter-body p.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Scene 8: 告白 --- */
+.ring-container {
+  position: relative;
+  max-width: 250px;
+  margin: 0 auto 30px;
+}
+
+.ring-glow {
+  position: absolute;
+  top: -30px;
+  left: -30px;
+  right: -30px;
+  bottom: -30px;
+  background: radial-gradient(ellipse,
+      var(--glow-gold), transparent 70%);
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: ringGlow 2s ease-in-out infinite;
+}
+
+@keyframes ringGlow {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+.ring-photo {
+  aspect-ratio: 1 !important;
+  border-radius: 50% !important;
+  border: 3px solid var(--accent-gold) !important;
+  box-shadow: 0 0 40px var(--glow-gold);
+}
+
+.confession-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.confession-question {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  color: var(--accent-pink);
+  margin-bottom: 40px;
+  line-height: 1.5;
+  text-shadow: 0 0 30px var(--glow-pink);
+}
+
+.confession-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-yes {
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-rose));
+  color: white;
+  border: none;
+  padding: 16px 40px;
+  border-radius: 50px;
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px var(--glow-pink);
+}
+
+.btn-yes:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 30px var(--glow-pink);
+}
+
+.confession-name {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  color: var(--accent-pink);
+  line-height: 1.5;
+  text-shadow: 0 0 30px var(--glow-pink);
+}
+
+.btn-no {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
+  padding: 16px 32px;
+  border-radius: 50px;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.btn-no.escaping {
+  position: fixed;
+  z-index: 999;
+  opacity: 0.85;
+  pointer-events: auto;
+}
+
+.btn-no.btn-no-hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.5s ease !important;
+}
+
+/* --- Scene 8: 慶祝 --- */
+#scene-8 .scene-content {
+  background: radial-gradient(ellipse at center,
+      rgba(255, 107, 157, 0.1),
+      var(--bg-dark));
+}
+
+#fireworks-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.celebration-title {
+  font-size: clamp(3rem, 10vw, 5rem);
+  animation: heartBeat 1.5s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes heartBeat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.15);
+  }
+
+  30% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.1);
+  }
+
+  60% {
+    transform: scale(1);
+  }
+}
+
+.celebration-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.celebration-sub {
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  color: var(--accent-soft-pink);
+  margin: 20px 0 30px;
+}
+
+.final-photo {
+  max-width: 280px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--accent-pink);
+  box-shadow: 0 0 40px var(--glow-pink);
+}
+
+.final-photo .photo-placeholder {
+  aspect-ratio: 1;
+}
+
+/* --- 響應式設計 --- */
+@media (max-width: 480px) {
+  .scene-content {
+    padding: 30px 18px;
+  }
+
+  .photo-gallery {
+    gap: 10px;
+  }
+
+  .detail-cards {
+    gap: 8px;
+  }
+
+  .detail-tag {
+    font-size: 0.6rem;
+    padding: 3px 7px;
+  }
+
+  .letter-paper {
+    padding: 24px 20px;
+  }
+
+  .confession-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cute-cards {
+    gap: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .cute-cards {
+    flex-direction: row;
+  }
+
+  .cute-card {
+    flex: 1;
+  }
+}
+
+/* --- 禁止告白場景的整體點擊觸發跳轉 --- */
+#scene-7 {
+  cursor: default;
+}
+
+/* --- 禁止慶祝場景的整體點擊觸發跳轉 --- */
+#scene-8 {
+  cursor: default;
+}
